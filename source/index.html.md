@@ -3,13 +3,6 @@ title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
-  - python
-  - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors
@@ -19,221 +12,341 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Qurix API! You can use our API to access HIMS and PRM endpoints, which can get information on patients, episodes, beds and billing in our database.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+You can view code examples in the dark area to the right.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
 
 # Authentication
 
 > To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+  -H "Authorization:  "
 ```
 
-```javascript
-const kittn = require('kittn');
+> Make sure to replace ` ` with your API key.
 
-let api = kittn.authorize('meowmeowmeow');
-```
+Qurix uses API keys to allow access to the API. You can register a new API key at our [developer portal](http://example.com/developers).
 
-> Make sure to replace `meowmeowmeow` with your API key.
+API key is expected to be included in all API requests to the server in a header that looks like the following:
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+`Authorization:  `
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code> </code> with your personal API key.
 </aside>
 
-# Kittens
+# Masters
 
-## Get All Kittens
+## Get Common Data Masters
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+curl "http://qurix.io/hims/openapi/masterdetails/commondata?locid=83"
+  -H "Authorization:"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 [
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
+  { 
+
+   "all_countries":[], 
+   "all_districts":[], 
+   "all_states":[], 
+   "all_titles":[], 
+   "patient_categories":[], 
+   "all_tpas":[], 
+   "episode_types":[], 
+   "payment_types":[], 
+   "referal_sources":[], 
+   "all_sponsors":[] 
+
+  } 
 ]
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all masters.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`http://qurix.io/hims/openapi/masterdetails/commondata?locid=83`
 
-### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+<aside class="notice">
+Remember — Areas aren't part of common data.
 </aside>
 
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+## Get Areas
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+curl "http://qurix.io/hims/openapi/geo/allareas?districtid=583"
+  -H "Authorization:  "
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`http://qurix.io/hims/openapi/geo/allareas?districtid=583`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
+ID | The ID of the Area to retrieve
 
-## Delete a Specific Kitten
+## Get RateSheetMappers(Sponsors)
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
 
 ```shell
-curl "http://example.com/api/kittens/2"
+curl "http://qurix.io/hims/openapi/masterdetails/ratesheetmappers?locationid=83"
   -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+  -H "Authorization:  "
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
+[
+    { 
 
-This endpoint deletes a specific kitten.
+        "patientCategoryId": 3, 
+
+        "patientCategoryName": "Corporate", 
+
+        "sponsorId": 73, 
+
+        "sponsorName": "Microsoft", 
+
+        "tpaId": null, 
+
+        "tpaName": null, 
+
+        "planId": 11, 
+
+        "planName": "Microsoft Executive HealthCheck", 
+
+        "ratesheetId": 208 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 3, 
+
+        "patientCategoryName": "Corporate", 
+
+        "sponsorId": 74, 
+
+        "sponsorName": "Infosys", 
+
+        "tpaId": null, 
+
+        "tpaName": null, 
+
+        "planId": 9, 
+
+        "planName": "Infosys Pre-employement Check", 
+
+        "ratesheetId": 208 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 1, 
+
+        "patientCategoryName": "General", 
+
+        "sponsorId": 3, 
+
+        "sponsorName": "General", 
+
+        "tpaId": null, 
+
+        "tpaName": null, 
+
+        "planId": null, 
+
+        "planName": null, 
+
+        "ratesheetId": 1 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 5, 
+
+        "patientCategoryName": "Insurance", 
+
+        "sponsorId": 37, 
+
+        "sponsorName": "Bajaj Allianz General Insurance Co. Ltd", 
+
+        "tpaId": 8, 
+
+        "tpaName": "Good Health Insurance TPA Limited", 
+
+        "planId": null, 
+
+        "planName": null, 
+
+        "ratesheetId": 122 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 5, 
+
+        "patientCategoryName": "Insurance", 
+
+        "sponsorId": 39, 
+
+        "sponsorName": "Cholamandalam MS General Insurance Co. Ltd.", 
+
+        "tpaId": 6, 
+
+        "tpaName": "Family Health Plan Insurance TPA Limited", 
+
+        "planId": null, 
+
+        "planName": null, 
+
+        "ratesheetId": 123 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 5, 
+
+        "patientCategoryName": "Insurance", 
+
+        "sponsorId": 44, 
+
+        "sponsorName": "Future Generali India Insurance Co. Ltd.", 
+
+        "tpaId": 15, 
+
+        "tpaName": "Medi Assist Insurance TPA Private Limited", 
+
+        "planId": null, 
+
+        "planName": null, 
+
+        "ratesheetId": 124 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 5, 
+
+        "patientCategoryName": "Insurance", 
+
+        "sponsorId": 46, 
+
+        "sponsorName": "HDFC ERGO General Insurance Co.Ltd.", 
+
+        "tpaId": 15, 
+
+        "tpaName": "Medi Assist Insurance TPA Private Limited", 
+
+        "planId": null, 
+
+        "planName": null, 
+
+        "ratesheetId": 124 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 5, 
+
+        "patientCategoryName": "Insurance", 
+
+        "sponsorId": 47, 
+
+        "sponsorName": "ICICI LOMBARD General Insurance Co. Ltd.", 
+
+        "tpaId": 6, 
+
+        "tpaName": "Family Health Plan Insurance TPA Limited", 
+
+        "planId": null, 
+
+        "planName": null, 
+
+        "ratesheetId": 141 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 5, 
+
+        "patientCategoryName": "Insurance", 
+
+        "sponsorId": 48, 
+
+        "sponsorName": "IFFCO TOKIO General Insurance Co. Ltd.", 
+
+        "tpaId": 6, 
+
+        "tpaName": "Family Health Plan Insurance TPA Limited", 
+
+        "planId": null, 
+
+        "planName": null, 
+
+        "ratesheetId": 123 
+
+    }, 
+
+    { 
+
+        "patientCategoryId": 5, 
+
+        "patientCategoryName": "Insurance", 
+
+        "sponsorId": 63, 
+
+        "sponsorName": "The New India Assurance Co. Ltd", 
+
+        "tpaId": 8, 
+
+        "tpaName": "Good Health Insurance TPA Limited", 
+
+        "planId": null, 
+
+        "planName": null, 
+
+        "ratesheetId": 125 
+
+    } 
+]    
+```
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`GET http://qurix.io/hims/openapi/masterdetails/ratesheetmappers?locationid=83`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to delete
+ID | The ID of the Sponsor to retrieve
 
