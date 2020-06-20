@@ -78,7 +78,7 @@ This endpoint retrieves all masters.
 
 
 <aside class="notice">
-Remember — Areas aren't part of common data.
+Areas aren't part of common data masters.
 </aside>
 
 ## Get Areas
